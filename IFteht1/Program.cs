@@ -16,7 +16,7 @@ namespace IFteht1
             }
             else
             {
-                if (luku < 0)
+                if (luku > 0)
                 {
                     Console.WriteLine("Luku on postitiivinen");
                 }

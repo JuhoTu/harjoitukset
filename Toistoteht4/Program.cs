@@ -88,8 +88,39 @@ namespace Toistoteht4
             Console.WriteLine("\n");
             //teht5
 
+            for (i = 1; i <= 13; i++)
+            {
+                double result = rnd.NextDouble();
+                if (result <= 0.4)
+                {
+                    Console.WriteLine("{0}. 1",i);
+                }
+                else if (0.4 < result && result < 0.6)
+                {
+                    Console.WriteLine("{0}. X",i);
+                }
+                else
+                {
+                    Console.WriteLine("{0}. 2",i);
+                }
+            }
 
+            Console.WriteLine("\n");
+            //teht5
 
+            int kutonen = 0;
+
+            for (i = 1; i <= 1000; i++)
+            {
+                int result = rnd.Next(6);
+                result++;
+                Console.Write("{0} ", result);
+                if (result == 6)
+                {
+                    kutonen++;
+                }
+            }
+            Console.WriteLine("Kuutosia tuli {0} kertaa", kutonen);
 
 
         }

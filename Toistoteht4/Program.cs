@@ -36,19 +36,57 @@ namespace Toistoteht4
             //teht3
 
             Random rnd = new Random();
-            i = 0;
-            n = 1;
 
-            while (i < 6)
+            for (i = 1; i <= 4; i++)
             {
-                Console.WriteLine("\nRivi {0}:", i);
-                i++;
-                while (n <= 20)
+                Console.Write("\nRivi {0}: ", i);
+                n = 1;
+                while (n <= 5)
                 {
-                    Console.WriteLine(rnd.Next(50));
-                    n++;
+
+                    if (n == 5)
+                    {
+                        Console.Write("{0}", rnd.Next(50));
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write("{0}, ", rnd.Next(50));
+                        n++;
+                    }
                 }
             }
+
+            Console.WriteLine("\n");
+            //teht4
+
+            int kruuna = 0, klaava = 0, input;
+
+            Console.WriteLine("Syötä luku montako arpasuoritusta suoritetaan: ");
+            input = int.Parse(Console.ReadLine());
+
+            for (i = 0; i < input;i++)
+            {
+                int result = rnd.Next(2);
+                if (result == 1)
+                {
+                    kruuna++;
+                }
+                else if (result == 0)
+                {
+                    klaava++;
+                }
+                else
+                {
+                    Console.Write("Virhe");
+                    break;
+                }
+            }
+            Console.WriteLine("Rahaa on heitetty {0} kertaa.",input);
+            Console.WriteLine("Klaavoja tuli {0} ja kruunoja {1}", klaava, kruuna);
+
+            Console.WriteLine("\n");
+            //teht5
 
 
 

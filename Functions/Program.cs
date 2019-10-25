@@ -8,7 +8,7 @@ namespace Functions
         {
             //task1
             Console.WriteLine("Give a number of how many stars you'd like to see: ");
-            int input = int.Parse(Console.ReadLine());
+            int input = Parse(Console.ReadLine());
             if (input > 1)
             {
                 Star(input);
@@ -25,10 +25,35 @@ namespace Functions
             Console.WriteLine("\n");
             //taks2
             Console.WriteLine("Give two numbers: ");
-            int in1 = int.Parse(Console.ReadLine());
-            int in2 = int.Parse(Console.ReadLine());
+            int in1 = Parse(Console.ReadLine());
+            int in2 = Parse(Console.ReadLine());
             Minimi(in1, in2);
 
+            Console.WriteLine("\n");
+            //task 3
+
+        }
+
+        static int Parse (string input)
+        {
+            int output = 0;
+            string newInput = "";
+
+            for (int i = 0; i < 5;i++)
+            {
+                bool parse = int.TryParse(input, out output);
+                bool parse1 = int.TryParse(newInput, out output);
+                if (parse == true || parse1 == true)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Input is not a valid number, enter a new number:");
+                    newInput = Console.ReadLine();
+                }
+            }
+            return output;
         }
 
         static string Star (int input)

@@ -6,16 +6,26 @@ namespace Functions
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Syötä kuinka monta tähteä haluat tulostaa: ");
-            string input = Console.ReadLine();
-            Star(input);
+            Console.WriteLine("Give a number of how many stars you'd like to see: ");
+            int input = int.Parse(Console.ReadLine());
+            if (input > 1)
+            {
+                Star(input);
+            }
+            else if (input == 0)
+            {
+                Console.WriteLine(":(");
+            }
+            else
+            {
+                Console.WriteLine("Error! Give a valid number!");
+            }
         }
 
-        static string Star (string input)
+        static string Star (int input)
         {
             string output = "";
-            int n = int.Parse(input);
-            for (int i = 1; i <= n; i++)
+            for (int i = 1; i <= input; i++)
             {
                 Console.Write($"{output}*");
             }

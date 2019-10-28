@@ -8,7 +8,7 @@ namespace Functions
         {
             //task1
             Console.WriteLine("Give a number of how many stars you'd like to see: ");
-            int input = Parse(Console.ReadLine());
+            int input = Parse();
             if (input > 1)
             {
                 Star(input);
@@ -22,34 +22,38 @@ namespace Functions
                 Console.WriteLine("Error! Give a valid number!");
             }
 
-            Console.WriteLine("\n");
             //taks2
-            Console.WriteLine("Give two numbers: ");
-            int in1 = Parse(Console.ReadLine());
-            int in2 = Parse(Console.ReadLine());
+            Console.WriteLine("\n\nGive two numbers: ");
+            int in1 = Parse();
+            int in2 = Parse();
             Minimi(in1, in2);
 
-            Console.WriteLine("\n");
             //task 3
-            input = Parse(Console.ReadLine());
-            int retNumber = 0, lowerBound = 0, upperBound = 0;
-            retNumber = numberFromRange(input,lowerBound, upperBound);
+            int retNumber, lowerBound = 0, upperBound = 100;
+            Console.WriteLine($"\n\nGive number within range {lowerBound} - {upperBound}");
+            retNumber = numberFromRange(lowerBound, upperBound);
             Console.WriteLine(retNumber);
 
+            //task 4
+            Console.WriteLine("\nGive ten numbers: ");
+            Console.WriteLine(tenNumbers());
         }
 
         //Checks if the user input can be parsed and in error asks a number again
-        static int Parse (string input)
+        static int Parse ()
         {
-            int output = 0;
             string newInput = "";
-
+            bool parse = int.TryParse(Console.ReadLine(), out int output);
             for (int i = 0; i < 5;i++)
             {
-                bool parse = int.TryParse(input, out output);
-                bool parse1 = int.TryParse(newInput, out output);
-                if (parse == true || parse1 == true)
+                bool parse1 = int.TryParse(newInput, out int result);
+                if (parse == true)
                 {
+                    break;
+                }
+                else if (parse1 == true)
+                {
+                    output = result;
                     break;
                 }
                 else
@@ -89,31 +93,61 @@ namespace Functions
             return o;
         }
 
-        static int numberFromRange(int num, int low, int upper)
+        static int numberFromRange(int low, int upper)
         {
-            int[] range = {};
-            bool returned = false;
-            while (returned == false)
+            int output = 0, inputNumber;
+            bool going = false;
+
+            do
             {
-                for (int i = low; i < upper; i++)
+                inputNumber = Parse();
+                if (inputNumber >= low && inputNumber <= upper)
                 {
-                    range[i] = low;
-                    low++;
+                    going = true;
+                    output = inputNumber;
                 }
-                for (int i = 0; i < upper; i++)
+                else
                 {
-                    if (i == num)
-                    {
-                        returned = true;
-                        return num;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    Console.WriteLine("Input was not within range");
                 }
-                Console.WriteLine("Given number was not in range, please, give a new number: ");
+            } while (going == false);
+
+            return output;
+        }
+
+        static int positiveNumber()
+        {
+            int result, output;
+            do
+            {
+                result = Parse();
+                if (result < 1)
+                {
+                    Console.WriteLine("Enter a positive number!");
+                }
+            } while (result < 1);
+            output = result;
+            return output;
+        }
+
+        static string tenNumbers ()
+        {
+            string outputNum = "";
+            int maxIndex = 0, maxIndexNum = 0;
+            for (int i = 1;i <= 10;i++)
+            {
+                Console.Write($"{i}. ");
+                int n = positiveNumber();
+                outputNum += $"{n} ";
+                if(n > maxIndex)
+                {
+                    maxIndex = n;
+                    maxIndexNum = i;
+                }
             }
+
+            string output = $"\nYou entered following numbers:\n{outputNum}\n\nThe biggest number was {maxIndex} and it was {maxIndexNum}. number";
+            return output;
         }
     }
 }

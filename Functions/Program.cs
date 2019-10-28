@@ -31,9 +31,14 @@ namespace Functions
 
             Console.WriteLine("\n");
             //task 3
+            input = Parse(Console.ReadLine());
+            int retNumber = 0, lowerBound = 0, upperBound = 0;
+            retNumber = numberFromRange(input,lowerBound, upperBound);
+            Console.WriteLine(retNumber);
 
         }
 
+        //Checks if the user input can be parsed and in error asks a number again
         static int Parse (string input)
         {
             int output = 0;
@@ -82,6 +87,33 @@ namespace Functions
                 Console.Write("Error");
             }
             return o;
+        }
+
+        static int numberFromRange(int num, int low, int upper)
+        {
+            int[] range = {};
+            bool returned = false;
+            while (returned == false)
+            {
+                for (int i = low; i < upper; i++)
+                {
+                    range[i] = low;
+                    low++;
+                }
+                for (int i = 0; i < upper; i++)
+                {
+                    if (i == num)
+                    {
+                        returned = true;
+                        return num;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                Console.WriteLine("Given number was not in range, please, give a new number: ");
+            }
         }
     }
 }

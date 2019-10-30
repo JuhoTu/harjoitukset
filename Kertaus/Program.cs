@@ -36,8 +36,8 @@ namespace Kertaus
 
             //task 4
             Console.WriteLine("\nGive two numbers you'd like to be computed on basic arithmatic operators: ");
-            int num1 = int.Parse(Console.ReadLine());
-            int num2 = int.Parse(Console.ReadLine());
+            double num1 = double.Parse(Console.ReadLine());
+            double num2 = double.Parse(Console.ReadLine());
 
             Console.WriteLine($"{num1} + {num2} = {num1 + num2}");
             Console.WriteLine($"{num1} - {num2} = {num1 - num2}");

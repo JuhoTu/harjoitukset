@@ -29,7 +29,6 @@ namespace Array1
                 average = average + iT[i];
             }
             Console.WriteLine($"Average number was {average / 100}");
-
         }
     }
 }

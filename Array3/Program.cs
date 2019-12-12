@@ -119,11 +119,22 @@ namespace Array3
 
         static void PrintTask3(ref int[] arrT_1, ref int[] arrT_2, ref int[] arrT_3)
         {
-            Console.WriteLine("01 02 03 04 05 06 07 08 09 10");
-            Console.WriteLine("-----------------------------");
+            Console.WriteLine("         01 02 03 04 05 06 07 08 09 10");
+            Console.WriteLine("         -----------------------------");
+            Console.Write($"arrT_1 =");
             for (int i = 0; i < arrT_1.Length; i++)
             {
-                Console.WriteLine();
+                Console.Write($" {arrT_1[i]:d2}");
+            }
+            Console.Write($"\narrT_2 =");
+            for (int i = 0; i < arrT_2.Length; i++)
+            {
+                Console.Write($" {arrT_2[i]:d2}");
+            }
+            Console.Write($"\narrT_3 =");
+            for (int i = 0; i < arrT_3.Length; i++)
+            {
+                Console.Write($" {arrT_3[i]:d2}");
             }
         }
     }

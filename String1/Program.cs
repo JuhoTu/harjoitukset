@@ -10,7 +10,7 @@ namespace String1
             Console.WriteLine("Hello World!\n");
             do
             {
-                Console.WriteLine("Choose from tasks x - x by typing the corresponding number. To exit type 'exit'.");
+                Console.WriteLine("Choose from tasks 1 - 4 by typing the corresponding number. To exit type 'exit'.");
                 input = Console.ReadLine();
                 if (input == "exit")
                 {

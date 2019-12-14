@@ -15,6 +15,7 @@ namespace String2
         static int VowelCount (string input)
         {
             int count = 0;
+            input = input.ToLower();
             string vowels = "aeiouyäö";
             for (int i = 0; i < input.Length; i++)
             {

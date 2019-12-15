@@ -35,7 +35,7 @@ namespace String3
             if (input[0].Equals('4') || input[0].Equals('5'))
             {
                 formCheck = true;
-                bankNum = input[0];
+                bankNum = int.Parse(input[0].ToString());
                 Console.WriteLine(input[0]);
             }
             else

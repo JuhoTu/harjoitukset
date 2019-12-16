@@ -8,6 +8,7 @@ namespace String3
         {
             Console.WriteLine("Hello World!");
             string input = Inputter();
+            Validator(input);
         }
 
         static string Inputter()
@@ -22,10 +23,15 @@ namespace String3
                 if (input.Length > 8 && input.Length < 15)
                 {
                     form = BankChecker(input, ref bankNum);
+                    input = input.Replace("-", "");
+                    Zeros(ref input, bankNum);
+                    CheckNumber(input);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid account number! Length is not valid");
                 }
             } while (form == false);
-            input = input.Replace("-", "");
-            Console.WriteLine("banknum is " + bankNum);
             return input;
         }
 
@@ -54,9 +60,39 @@ namespace String3
             return formCheck;
         }
 
-        static void CheckNumber()
+        static void Zeros(ref string input, int bankNum)
         {
+            int length = 14 - input.Length;
+            if (bankNum == 4 || bankNum == 5)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    input = input.Insert(i + 7, "0");
+                }
+            }
+            else
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    input = input.Insert(i + 6, "0");
+                }
+            }
+            Console.WriteLine(input);
+        }
 
+        static void CheckNumber(string input)
+        {
+            string removed = input.Remove(12, 1);
+            
+            for (int i = 0; i < 12; i++)
+            {
+                Console.WriteLine(removed);
+            }
+        }
+
+        static void Validator(string input)
+        {
+            Console.WriteLine(input);
         }
     }
 }

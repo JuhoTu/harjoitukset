@@ -25,7 +25,7 @@ namespace String3
                 }
             } while (form == false);
             input = input.Replace("-", "");
-            Console.WriteLine("banknum is" + bankNum);
+            Console.WriteLine("banknum is " + bankNum);
             return input;
         }
 
@@ -36,11 +36,20 @@ namespace String3
             {
                 formCheck = true;
                 bankNum = int.Parse(input[0].ToString());
-                Console.WriteLine(input[0]);
+            }
+            else if(input[0].Equals('1') || input[0].Equals('2') || input[0].Equals('6') || input[0].Equals('8'))
+            {
+                formCheck = true;
+                bankNum = int.Parse(input[0].ToString());
+            }
+            else if (input[0].Equals('3') && input[1].Equals('1') || input[1].Equals('3') || input[1].Equals('4') || input[1].Equals('6') || input[1].Equals('7') || input[1].Equals('8') || input[1].Equals('9'))
+            {
+                formCheck = true;
+                bankNum = 30 + int.Parse(input[1].ToString());
             }
             else
             {
-                Console.WriteLine("pankki on joku muu");
+                Console.WriteLine("Invalid account number!");
             }
             return formCheck;
         }

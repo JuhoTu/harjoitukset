@@ -7,11 +7,11 @@ namespace String3
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            string input = Inputter();
-            Validator(input);
+            bool input = Inputter();
+            Print(input);
         }
 
-        static string Inputter()
+        static bool Inputter()
         {
             Console.WriteLine("Input account number:");
             bool form = false;
@@ -22,17 +22,24 @@ namespace String3
                 input = Console.ReadLine();
                 if (input.Length > 8 && input.Length < 15)
                 {
-                    form = BankChecker(input, ref bankNum);
+                    bool bankCheck = BankChecker(input, ref bankNum);
                     input = input.Replace("-", "");
                     Zeros(ref input, bankNum);
-                    CheckNumber(input);
+                    if (bankCheck == true && CheckNumber(input) == true)
+                    {
+                        form = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid bank or check number!");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Invalid account number! Length is not valid");
                 }
             } while (form == false);
-            return input;
+            return form;
         }
 
         static bool BankChecker(string input, ref int bankNum)
@@ -48,10 +55,15 @@ namespace String3
                 formCheck = true;
                 bankNum = int.Parse(input[0].ToString());
             }
-            else if (input[0].Equals('3') && input[1].Equals('1') || input[1].Equals('3') || input[1].Equals('4') || input[1].Equals('6') || input[1].Equals('7') || input[1].Equals('8') || input[1].Equals('9'))
+            else if (input[0].Equals('3'))
             {
-                formCheck = true;
-                bankNum = 30 + int.Parse(input[1].ToString());
+                if (input[1].Equals('1') || input[1].Equals('3') || input[1].Equals('4') || input[1].Equals('6') || input[1].Equals('7') || input[1].Equals('8') || input[1].Equals('9'))
+                {
+                    formCheck = true;
+                    bankNum = 30 + int.Parse(input[1].ToString());
+                }
+                else
+                    Console.WriteLine("Invalid account number!");
             }
             else
             {
@@ -77,22 +89,45 @@ namespace String3
                     input = input.Insert(i + 6, "0");
                 }
             }
-            Console.WriteLine(input);
         }
 
-        static void CheckNumber(string input)
+        static bool CheckNumber(string input)
         {
             string removed = input.Remove(12, 1);
-            
+            int sum = 0, addedNum, checkNumOrig = int.Parse(input[13].ToString());
             for (int i = 0; i < 12; i++)
             {
-                Console.WriteLine(removed);
+                if (i % 2 == 2)
+                {
+                    addedNum = int.Parse(removed[i].ToString()) * 2;
+                    sum = sum + addedNum;
+                }
+                else
+                {
+                    sum = sum + int.Parse(removed[i].ToString());
+                }
+            }
+            int checkNum = (sum + checkNumOrig) - sum;
+            if (checkNum == checkNumOrig)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        static void Validator(string input)
+        static void Print(bool input)
         {
-            Console.WriteLine(input);
+            if (input == true)
+            {
+                Console.WriteLine("BBAN is valid!");
+            }
+            else
+            {
+                Console.WriteLine("Not a valid BBAN!");
+            }
         }
     }
 }

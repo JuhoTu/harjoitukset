@@ -99,13 +99,13 @@ namespace String4
             {
                 year = "19" + year;
             }
-            else if (century == "A")
+            else if (century.ToUpper() == "A")
             {
                 year = "20" + year;
             }
             else
             {
-                Console.WriteLine("Wrond century.");
+                Console.WriteLine("Wrong century.");
                 return result;
             }
 

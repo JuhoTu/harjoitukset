@@ -53,15 +53,54 @@ namespace ReferenceNumber
 
         static void RefChecker()
         {
-
+            string input = Inputter();
+            Validator(input);
         }
 
         static void RefCreator()
         {
-
+            string create = RefCreate();
+            Validator(create);
         }
 
         static void RefMultiCreator()
+        {
+            int count = HowMany();
+            for (int i = 0; i < count; i++)
+            {
+                string create = RefCreate();
+                Validator(create);
+                Vault(create);
+            }
+        }
+
+        static string Inputter()
+        {
+            string input = Console.ReadLine();
+
+            return input;
+        }
+
+        static bool Validator(string checkInput)
+        {
+            if (checkInput.Length > 4 && checkInput.Length < 20)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        static string RefCreate()
+        {
+            return "0";
+        }
+
+        static int HowMany()
+        {
+            return 0;
+        }
+
+        static void Vault(string input)
         {
 
         }

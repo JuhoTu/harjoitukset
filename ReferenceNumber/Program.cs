@@ -44,7 +44,7 @@ namespace ReferenceNumber
             Console.WriteLine("Reference number validator and creator.");
             Console.WriteLine("[C] Validate reference number.");
             Console.WriteLine("[N] Create a new one.");
-            Console.WriteLine("[M] Create a new one.");
+            Console.WriteLine("[M] Create multiple.");
             Console.WriteLine("[X] Close the program.");
             Console.Write("Choose procedure: ");
 
@@ -54,13 +54,20 @@ namespace ReferenceNumber
         static void RefChecker()
         {
             string input = Inputter();
-            Validator(input);
+            if (Validator(input) == true)
+            {
+                Console.WriteLine("Reference number is valid.");
+            }
+            else
+            {
+                Console.WriteLine("Reference number is invalid.");
+            }
         }
 
         static void RefCreator()
         {
             string create = RefCreate();
-            Validator(create);
+            Console.WriteLine(Validator(create));
         }
 
         static void RefMultiCreator()
@@ -69,13 +76,13 @@ namespace ReferenceNumber
             for (int i = 0; i < count; i++)
             {
                 string create = RefCreate();
-                Validator(create);
                 Vault(create);
             }
         }
 
         static string Inputter()
         {
+            Console.Write("\nInput the reference number: ");
             string input = Console.ReadLine();
 
             return input;

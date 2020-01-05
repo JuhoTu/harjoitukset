@@ -67,7 +67,6 @@ namespace ReferenceNumber
         static void RefCreator()
         {
             string create = RefCreate();
-            Console.WriteLine(Validator(create));
         }
 
         static void RefMultiCreator()
@@ -84,8 +83,14 @@ namespace ReferenceNumber
         {
             Console.Write("\nInput the reference number: ");
             string input = Console.ReadLine();
-
+            RemoveSpaces(ref input);
+            Console.WriteLine(input);
             return input;
+        }
+
+        static void RemoveSpaces(ref string userInput)
+        {
+            userInput = userInput.Replace(" ", "");
         }
 
         static bool Validator(string checkInput)

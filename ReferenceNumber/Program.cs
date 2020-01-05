@@ -82,8 +82,23 @@ namespace ReferenceNumber
         static string Inputter()
         {
             Console.Write("\nInput the reference number: ");
-            string input = Console.ReadLine();
-            RemoveSpaces(ref input);
+            string input = "";
+            bool correctForm = false;
+            do
+            {
+                input = Console.ReadLine();
+                RemoveSpaces(ref input);
+                if (IsNumbersOnly(input) == true)
+                {
+                    if (Validator(input) == true)
+                    {
+                        correctForm = true;
+                    }
+                }
+                else
+                    Console.WriteLine("Input must contain only numbers!");
+            } while (correctForm == false);
+            
             Console.WriteLine(input);
             return input;
         }
@@ -93,12 +108,40 @@ namespace ReferenceNumber
             userInput = userInput.Replace(" ", "");
         }
 
+        static bool IsNumbersOnly(string userInput)
+        {
+            int failCount = 0;
+            for (int i = 0; i < userInput.Length; i++)
+            {
+                bool tryParse = int.TryParse(userInput[i].ToString(), out _);
+                if (tryParse == false)
+                {
+                    failCount++;
+                }
+            }
+            if (failCount == 0)
+                return true;
+            else
+                return false;
+        }
+
         static bool Validator(string checkInput)
         {
             if (checkInput.Length > 4 && checkInput.Length < 20)
             {
-                return true;
+                if (CheckNumber(checkInput) == true)
+                {
+                    return true;
+                }
             }
+            return false;
+        }
+
+        static bool CheckNumber(string input)
+        {
+            string refNumber = input.Remove(input.Length);
+            char checkNumber = input[input.Length];
+            
             return false;
         }
 

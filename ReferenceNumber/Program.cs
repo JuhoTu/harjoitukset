@@ -95,6 +95,8 @@ namespace ReferenceNumber
                         correctForm = true;
                     }
                 }
+                else if (input == "x")
+                    break;
                 else
                     Console.WriteLine("Input must contain only numbers!");
             } while (correctForm == false);
@@ -114,10 +116,8 @@ namespace ReferenceNumber
             for (int i = 0; i < userInput.Length; i++)
             {
                 bool tryParse = int.TryParse(userInput[i].ToString(), out _);
-                if (tryParse == false)
-                {
+                if (tryParse == false)  
                     failCount++;
-                }
             }
             if (failCount == 0)
                 return true;
@@ -127,7 +127,7 @@ namespace ReferenceNumber
 
         static bool Validator(string checkInput)
         {
-            if (checkInput.Length > 4 && checkInput.Length < 20)
+            if (checkInput.Length > 3 && checkInput.Length < 20)
             {
                 if (CheckNumber(checkInput) == true)
                 {
@@ -141,7 +141,7 @@ namespace ReferenceNumber
         {
             string refNumber = input.Remove(input.Length);
             char checkNumber = input[input.Length];
-            
+            Console.WriteLine(refNumber + " " + checkNumber);
             return false;
         }
 

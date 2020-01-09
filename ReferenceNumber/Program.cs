@@ -91,14 +91,12 @@ namespace ReferenceNumber
                 if (IsNumbersOnly(input) == true)
                 {
                     if (Validator(input) == true)
-                    {
                         correctForm = true;
-                    }
                 }
                 else if (input == "x")
                     break;
                 else
-                    Console.WriteLine("Input must contain only numbers!");
+                    Error(2);
             } while (correctForm == false);
             
             Console.WriteLine(input);
@@ -129,20 +127,68 @@ namespace ReferenceNumber
         {
             if (checkInput.Length > 3 && checkInput.Length < 20)
             {
-                if (CheckNumber(checkInput) == true)
-                {
+                if (CheckNumber(checkInput, 1) == true)
                     return true;
-                }
             }
+            else
+                Error(3);
             return false;
         }
 
-        static bool CheckNumber(string input)
+        static bool CheckNumber(string input, int caller)
         {
-            string refNumber = input.Remove(input.Length);
-            char checkNumber = input[input.Length];
-            Console.WriteLine(refNumber + " " + checkNumber);
+            string refNumber = input;
+            int[] multiplier = { 7, 3, 1 };
+            int checkNumber = 0, correctCheckNumber, product = 1, sum = 0, nearestTenth;
+            if (caller == 1)
+            {
+                refNumber = refNumber.Remove(input.Length - 1);
+                checkNumber = int.Parse(input[input.Length - 1].ToString());
+            }
+            for (int i = refNumber.Length - 1; i >= 0; i--)
+            {
+                if (product == 1)
+                {
+                    product = int.Parse(refNumber[i].ToString()) * multiplier[0];
+                    sum += product;
+                    Console.WriteLine(sum);
+                    product = 7;
+                }
+                else if (product == 7)
+                {
+                    product = int.Parse(refNumber[i].ToString()) * multiplier[1];
+                    sum += product;
+                    Console.WriteLine(sum);
+                    product = 3;
+                }
+                else if (product == 3)
+                {
+                    product = int.Parse(refNumber[i].ToString()) * multiplier[2];
+                    sum += product;
+                    Console.WriteLine(sum);
+                    product = 1;
+                }
+            }
+            nearestTenth = Round(sum);
+            correctCheckNumber = nearestTenth - sum;
+            if (caller == 1)
+            {
+                if (checkNumber == correctCheckNumber)
+                {
+                    Console.WriteLine("Check number check ok");
+                    Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
+                    return true;
+                }
+                else
+                    Console.WriteLine("Check number check failed");
+            }
+            Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
             return false;
+        }
+
+        static int Round(int sum)
+        {
+            return (int)((Math.Round(sum / 10.0)) * 10);
         }
 
         static string RefCreate()
@@ -158,6 +204,24 @@ namespace ReferenceNumber
         static void Vault(string input)
         {
 
+        }
+
+        static void Error(int errorCode)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            switch (errorCode)
+            {
+                case 1:
+                    Console.WriteLine("Error occurred!");
+                    break;
+                case 2:
+                    Console.WriteLine("Input must contain only numbers!");
+                    break;
+                case 3:
+                    Console.WriteLine("Input should have 4 - 20 numbers!");
+                    break;
+            }
+            Console.ResetColor();
         }
     }
 }

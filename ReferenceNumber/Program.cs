@@ -53,7 +53,7 @@ namespace ReferenceNumber
 
         static void RefChecker()
         {
-            string input = Inputter(21, 0, true);
+            string input = Inputter("", 21, 0, true);
             if (Validator(input, 21, true) == true)
             {
                 Console.WriteLine("Reference number is valid.");
@@ -66,7 +66,7 @@ namespace ReferenceNumber
 
         static void RefCreator()
         {
-            string created = RefCreate(0, 20);
+            string created = RefCreate(1, 20);
             Console.WriteLine($"Created reference number: {created}");
         }
 
@@ -75,16 +75,20 @@ namespace ReferenceNumber
             int count = HowMany();
             string countNum = count.ToString();
             int max = 20 - countNum.Length;
-            for (int i = 0; i < count; i++)
+            if (count > 0)
             {
-                string create = RefCreate(1, max);
-                Vault(create);
+                for (int i = 0; i < count; i++)
+                {
+                    string create = RefCreate(2, max);
+                    Vault(create);
+                }
             }
+            else
+                Console.WriteLine("Creation was cancelled.");
         }
 
-        static string Inputter(int max, int caller, bool validate)
-        {            
-            string input;
+        static string Inputter(string input, int max, int caller, bool validate)
+        {
             bool correctForm = false;
             do
             {
@@ -92,12 +96,15 @@ namespace ReferenceNumber
                 {
                     case 0:
                         Console.Write("\nInput the reference number: ");
+                        input = Console.ReadLine();
                         break;
                     case 1:
                         Console.Write("\nInput the reference number basepart: ");
+                        input = Console.ReadLine();
+                        break;
+                    case 2:
                         break;
                 }
-                input = Console.ReadLine();
                 RemoveExtra(ref input);
                 if (IsNumbersOnly(input) == true)
                 {
@@ -212,21 +219,38 @@ namespace ReferenceNumber
 
         static string RefCreate(int caller, int max)
         {
-            string userInput = Inputter(max, 1, false);
+            string userInput = "";
+            if(caller == 2)
+                userInput = Console.ReadLine();
+            string basePart = Inputter(userInput, max, caller, false);
             int checkNumber = 0;
-            CheckNumber(userInput, 1, ref checkNumber);
-            userInput += checkNumber;
-            return userInput;
+            CheckNumber(basePart, 1, ref checkNumber);
+            basePart += checkNumber;
+            return basePart;
         }
 
         static int HowMany()
         {
-            return 0;
+            int howMany = 1;
+            bool okInput = false;
+            do
+            {
+                string input = Console.ReadLine();
+                bool tryParse = int.TryParse(input, out _);
+                if (tryParse == true)
+                {
+                    howMany = int.Parse(input);
+                    okInput = true;
+                }
+                else
+                    Error(2);
+            } while (okInput == false);
+            return howMany;
         }
 
         static void Vault(string input)
         {
-
+            
         }
 
         static void Error(int errorCode)
@@ -242,6 +266,9 @@ namespace ReferenceNumber
                     break;
                 case 3:
                     Console.WriteLine($"Invalid amount of numbers!");
+                    break;
+                case 4:
+                    Console.WriteLine($"Input must contain only numbers! Typing 0 and pressing enter will stop.");
                     break;
             }
             Console.ResetColor();

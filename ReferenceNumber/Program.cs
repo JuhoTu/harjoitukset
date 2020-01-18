@@ -82,7 +82,7 @@ namespace ReferenceNumber
         static string Inputter()
         {
             Console.Write("\nInput the reference number: ");
-            string input = "";
+            string input;
             bool correctForm = false;
             do
             {
@@ -93,7 +93,7 @@ namespace ReferenceNumber
                     if (Validator(input) == true)
                         correctForm = true;
                 }
-                else if (input == "x")
+                else if (input == "X" || input == "x")
                     break;
                 else
                     Error(2);
@@ -215,7 +215,7 @@ namespace ReferenceNumber
                     Console.WriteLine("Error occurred!");
                     break;
                 case 2:
-                    Console.WriteLine("Input must contain only numbers!");
+                    Console.WriteLine("Input must contain only numbers! Typing X and pressing enter will stop.");
                     break;
                 case 3:
                     Console.WriteLine("Input should have 4 - 20 numbers!");

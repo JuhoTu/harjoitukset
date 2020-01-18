@@ -66,7 +66,8 @@ namespace ReferenceNumber
 
         static void RefCreator()
         {
-            string created = RefCreate(1, 20);
+            string basePart = BasePart(1, 20);
+            string created = RefCreate(basePart);
             Console.WriteLine($"Created reference number: {created}");
         }
 
@@ -75,12 +76,15 @@ namespace ReferenceNumber
             int count = HowMany();
             string countNum = count.ToString();
             int max = 20 - countNum.Length;
+            string basePart = BasePart(2, max);
             if (count > 0)
             {
                 for (int i = 0; i < count; i++)
                 {
-                    string create = RefCreate(2, max);
-                    Vault(create);
+                    basePart = BaseMulti(basePart);
+                    string created = RefCreate(basePart);
+                    Vault(created);
+                    Console.WriteLine($"Created reference number: {created}");
                 }
             }
             else
@@ -99,8 +103,6 @@ namespace ReferenceNumber
                         input = Console.ReadLine();
                         break;
                     case 1:
-                        Console.Write("\nInput the reference number basepart: ");
-                        input = Console.ReadLine();
                         break;
                     case 2:
                         break;
@@ -206,7 +208,7 @@ namespace ReferenceNumber
                 else
                     Console.WriteLine("Check number check failed");
             }
-            if (caller == 1)
+            if (caller == 1 || caller == 2)
                 checkNumber = correctCheckNumber;
             Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
             return false;
@@ -217,12 +219,18 @@ namespace ReferenceNumber
             return (int)((Math.Round(sum / 10.0)) * 10);
         }
 
-        static string RefCreate(int caller, int max)
+        static string BasePart(int caller, int max)
         {
-            string userInput = "";
-            if(caller == 2)
-                userInput = Console.ReadLine();
+            Console.Write("Input basepart: ");
+            string userInput = Console.ReadLine();
             string basePart = Inputter(userInput, max, caller, false);
+            if (caller == 2)
+                basePart += 1;
+            return basePart;
+        }
+
+        static string RefCreate(string basePart)
+        {
             int checkNumber = 0;
             CheckNumber(basePart, 1, ref checkNumber);
             basePart += checkNumber;
@@ -235,17 +243,32 @@ namespace ReferenceNumber
             bool okInput = false;
             do
             {
+                Console.Write("\nHow many numbers will be created? ");
                 string input = Console.ReadLine();
                 bool tryParse = int.TryParse(input, out _);
                 if (tryParse == true)
                 {
-                    howMany = int.Parse(input);
-                    okInput = true;
+                    if (int.Parse(input) < 999)
+                    {
+                        howMany = int.Parse(input);
+                        okInput = true;
+                    }
                 }
                 else
                     Error(2);
             } while (okInput == false);
             return howMany;
+        }
+
+        static string BaseMulti(string basePart)
+        {
+            int adder = int.Parse(basePart);
+            Console.WriteLine(adder);
+            adder += 1;
+            Console.WriteLine(adder);
+            basePart = adder.ToString();
+            Console.WriteLine(basePart);
+            return basePart;
         }
 
         static void Vault(string input)

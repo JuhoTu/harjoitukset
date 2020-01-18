@@ -53,8 +53,8 @@ namespace ReferenceNumber
 
         static void RefChecker()
         {
-            string input = Inputter();
-            if (Validator(input) == true)
+            string input = Inputter(21, 0, true);
+            if (Validator(input, 21) == true)
             {
                 Console.WriteLine("Reference number is valid.");
             }
@@ -66,7 +66,8 @@ namespace ReferenceNumber
 
         static void RefCreator()
         {
-            string create = RefCreate();
+            string created = RefCreate();
+            Console.WriteLine($"Created reference number: {created}");
         }
 
         static void RefMultiCreator()
@@ -79,9 +80,17 @@ namespace ReferenceNumber
             }
         }
 
-        static string Inputter()
+        static string Inputter(int max, int caller, bool validate)
         {
-            Console.Write("\nInput the reference number: ");
+            switch (caller)
+            {
+                case 0:
+                    Console.Write("\nInput the reference number: ");
+                    break;
+                case 1:
+                    Console.Write("\nInput the reference number basepart: ");
+                    break;
+            }
             string input;
             bool correctForm = false;
             do
@@ -90,7 +99,9 @@ namespace ReferenceNumber
                 RemoveExtra(ref input);
                 if (IsNumbersOnly(input) == true)
                 {
-                    if (Validator(input) == true)
+                    if (validate == true && Validator(input, max) == true)
+                        correctForm = true;
+                    else if (validate == false)
                         correctForm = true;
                 }
                 else if (input == "X" || input == "x")
@@ -123,11 +134,12 @@ namespace ReferenceNumber
                 return false;
         }
 
-        static bool Validator(string checkInput)
+        static bool Validator(string checkInput, int max)
         {
-            if (checkInput.Length > 3 && checkInput.Length < 20)
+            if (checkInput.Length > 3 && checkInput.Length < max)
             {
-                if (CheckNumber(checkInput, 1) == true)
+                int i = 0;
+                if (CheckNumber(checkInput, 0, ref i) == true)
                     return true;
             }
             else
@@ -135,12 +147,12 @@ namespace ReferenceNumber
             return false;
         }
 
-        static bool CheckNumber(string input, int caller)
+        static bool CheckNumber(string input, int caller, ref int checkNumber)
         {
             string refNumber = input;
             int[] multiplier = { 7, 3, 1 };
-            int checkNumber = 0, correctCheckNumber, product = 1, sum = 0, nearestTenth;
-            if (caller == 1)
+            int correctCheckNumber, product = 1, sum = 0, nearestTenth;
+            if (caller == 0)
             {
                 refNumber = refNumber.Remove(input.Length - 1);
                 checkNumber = int.Parse(input[input.Length - 1].ToString());
@@ -171,7 +183,7 @@ namespace ReferenceNumber
             }
             nearestTenth = Round(sum);
             correctCheckNumber = nearestTenth - sum;
-            if (caller == 1)
+            if (caller == 0)
             {
                 if (checkNumber == correctCheckNumber)
                 {
@@ -182,6 +194,8 @@ namespace ReferenceNumber
                 else
                     Console.WriteLine("Check number check failed");
             }
+            if (caller == 1)
+                checkNumber = correctCheckNumber;
             Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
             return false;
         }
@@ -193,7 +207,11 @@ namespace ReferenceNumber
 
         static string RefCreate()
         {
-            return "0";
+            string userInput = Inputter(20, 1, false);
+            int checkNumber = 0;
+            CheckNumber(userInput, 1, ref checkNumber);
+            userInput = userInput + checkNumber;
+            return userInput;
         }
 
         static int HowMany()

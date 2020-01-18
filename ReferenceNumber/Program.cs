@@ -177,21 +177,18 @@ namespace ReferenceNumber
                 {
                     product = int.Parse(refNumber[i].ToString()) * multiplier[0];
                     sum += product;
-                    Console.WriteLine(sum);
                     product = 7;
                 }
                 else if (product == 7)
                 {
                     product = int.Parse(refNumber[i].ToString()) * multiplier[1];
                     sum += product;
-                    Console.WriteLine(sum);
                     product = 3;
                 }
                 else if (product == 3)
                 {
                     product = int.Parse(refNumber[i].ToString()) * multiplier[2];
                     sum += product;
-                    Console.WriteLine(sum);
                     product = 1;
                 }
             }
@@ -216,16 +213,37 @@ namespace ReferenceNumber
 
         static int Round(int sum)
         {
-            return (int)((Math.Round(sum / 10.0)) * 10);
+            return (int)(Math.Ceiling(sum / 10.0d) * 10);
+            //return (int)((Math.Round(sum / 10.0)) * 10);
         }
 
         static string BasePart(int caller, int max)
         {
-            Console.Write("Input basepart: ");
-            string userInput = Console.ReadLine();
-            string basePart = Inputter(userInput, max, caller, false);
+            string userInput;
+            bool correctForm = false;
+            do
+            {
+                Console.Write("\nInput basepart: ");
+                userInput = Console.ReadLine();
+                RemoveExtra(ref userInput);
+                if (userInput.Length > 3 && userInput.Length < max)
+                {
+                    if (IsNumbersOnly(userInput) == true)
+                    {
+                        correctForm = true;
+                    }
+                    else if (userInput == "X" || userInput == "x")
+                        break;
+                    else
+                        Error(2);
+                }
+                else
+                    Error(3);
+            } while (correctForm == false);
+
+        string basePart = Inputter(userInput, max, caller, false);
             if (caller == 2)
-                basePart += 1;
+                basePart += 0;
             return basePart;
         }
 
@@ -263,11 +281,8 @@ namespace ReferenceNumber
         static string BaseMulti(string basePart)
         {
             int adder = int.Parse(basePart);
-            Console.WriteLine(adder);
             adder += 1;
-            Console.WriteLine(adder);
             basePart = adder.ToString();
-            Console.WriteLine(basePart);
             return basePart;
         }
 

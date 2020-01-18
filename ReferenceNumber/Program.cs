@@ -29,10 +29,9 @@ namespace ReferenceNumber
                     // Exit
                     case 'X':
                         break;
-
+                    // In other cases
                     default:
-                        Console.WriteLine("\nCheck input. Proceed by pressing Enter.");
-                        Console.ReadLine();
+                        Error(1, null);
                         break;
                 }
                 Console.ReadLine();
@@ -81,8 +80,7 @@ namespace ReferenceNumber
             {
                 for (int i = 0; i < count; i++)
                 {
-                    basePart = BaseMulti(basePart);
-                    string created = RefCreate(basePart);
+                    string created = RefCreate(BaseMulti(basePart, i + 1));
                     Vault(created);
                     Console.WriteLine($"Created reference number: {created}");
                 }
@@ -116,7 +114,7 @@ namespace ReferenceNumber
                 else if (input == "X" || input == "x")
                     break;
                 else
-                    Error(2);
+                    Error(2, "X");
             } while (correctForm == false);
             
             Console.WriteLine(input);
@@ -154,10 +152,12 @@ namespace ReferenceNumber
                     int i = 0; // ref part is only for creation
                     if (CheckNumber(checkInput, 0, ref i) == true)
                         return true;
+                    else
+                        Error(5, "X");
                 }
             }
             else
-                Error(3);
+                Error(3, null);
             return false;
         }
 
@@ -198,23 +198,17 @@ namespace ReferenceNumber
             {
                 if (checkNumber == correctCheckNumber)
                 {
-                    Console.WriteLine("Check number check ok");
-                    Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
                     return true;
                 }
-                else
-                    Console.WriteLine("Check number check failed");
             }
             if (caller == 1 || caller == 2)
                 checkNumber = correctCheckNumber;
-            Console.WriteLine($"{checkNumber}, {correctCheckNumber}");
             return false;
         }
 
         static int Round(int sum)
         {
             return (int)(Math.Ceiling(sum / 10.0d) * 10);
-            //return (int)((Math.Round(sum / 10.0)) * 10);
         }
 
         static string BasePart(int caller, int max)
@@ -235,10 +229,10 @@ namespace ReferenceNumber
                     else if (userInput == "X" || userInput == "x")
                         break;
                     else
-                        Error(2);
+                        Error(2, null);
                 }
                 else
-                    Error(3);
+                    Error(3, null);
             } while (correctForm == false);
 
         string basePart = Inputter(userInput, max, caller, false);
@@ -257,7 +251,7 @@ namespace ReferenceNumber
 
         static int HowMany()
         {
-            int howMany = 1;
+            int howMany = 1, max = 999;
             bool okInput = false;
             do
             {
@@ -266,47 +260,53 @@ namespace ReferenceNumber
                 bool tryParse = int.TryParse(input, out _);
                 if (tryParse == true)
                 {
-                    if (int.Parse(input) < 999)
+                    if (int.Parse(input) < max)
                     {
                         howMany = int.Parse(input);
                         okInput = true;
                     }
+                    else
+                        Error(4, max.ToString());
                 }
                 else
-                    Error(2);
+                    Error(2, "0");
             } while (okInput == false);
             return howMany;
         }
 
-        static string BaseMulti(string basePart)
+        static string BaseMulti(string basePart, int i)
         {
-            int adder = int.Parse(basePart);
-            adder += 1;
-            basePart = adder.ToString();
+            basePart += i;
             return basePart;
         }
 
-        static void Vault(string input)
+        static void Vault(string created)
         {
             
         }
 
-        static void Error(int errorCode)
+        static void Error(int errorCode, string msg)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             switch (errorCode)
             {
                 case 1:
-                    Console.WriteLine($"Error occurred!");
+                    Console.WriteLine($"\nCheck input. Proceed by pressing Enter.");
                     break;
                 case 2:
-                    Console.WriteLine($"Input must contain only numbers! Typing X and pressing enter will stop.");
+                    Console.WriteLine($"Input must contain only numbers! Typing {msg} and pressing enter will stop.");
                     break;
                 case 3:
                     Console.WriteLine($"Invalid amount of numbers!");
                     break;
                 case 4:
-                    Console.WriteLine($"Input must contain only numbers! Typing 0 and pressing enter will stop.");
+                    Console.WriteLine($"Maximum of {msg} reference numbers can be created at a time.");
+                    break;
+                case 5:
+                    Console.WriteLine($"Check number is invalid! Typing {msg} and pressing enter will stop.");
+                    break;
+                default:
+                    Console.WriteLine("\nError occured!");
                     break;
             }
             Console.ResetColor();

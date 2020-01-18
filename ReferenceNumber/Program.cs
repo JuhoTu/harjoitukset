@@ -87,7 +87,7 @@ namespace ReferenceNumber
             do
             {
                 input = Console.ReadLine();
-                RemoveSpaces(ref input);
+                RemoveExtra(ref input);
                 if (IsNumbersOnly(input) == true)
                 {
                     if (Validator(input) == true)
@@ -103,9 +103,16 @@ namespace ReferenceNumber
             return input;
         }
 
-        static void RemoveSpaces(ref string userInput)
+        static void RemoveExtra(ref string userInput)
         {
             userInput = userInput.Replace(" ", "");
+            userInput = userInput.Replace("+", "");
+            userInput = userInput.Replace("-", "");
+            if (userInput[6] == 'A')
+                userInput = userInput.Replace(userInput[6], ' '); // Could not accept empty char
+            if (userInput[6] == 'B')
+                userInput = userInput.Replace(userInput[6], ' ');
+            userInput = userInput.Replace(" ", ""); // To replace the created space on nums with a or b as century definer
         }
 
         static bool IsNumbersOnly(string userInput)

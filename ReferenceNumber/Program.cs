@@ -54,7 +54,7 @@ namespace ReferenceNumber
         static void RefChecker()
         {
             string input = Inputter(21, 0, true);
-            if (Validator(input, 21) == true)
+            if (Validator(input, 21, true) == true)
             {
                 Console.WriteLine("Reference number is valid.");
             }
@@ -66,42 +66,42 @@ namespace ReferenceNumber
 
         static void RefCreator()
         {
-            string created = RefCreate();
+            string created = RefCreate(0, 20);
             Console.WriteLine($"Created reference number: {created}");
         }
 
         static void RefMultiCreator()
         {
             int count = HowMany();
+            string countNum = count.ToString();
+            int max = 20 - countNum.Length;
             for (int i = 0; i < count; i++)
             {
-                string create = RefCreate();
+                string create = RefCreate(1, max);
                 Vault(create);
             }
         }
 
         static string Inputter(int max, int caller, bool validate)
-        {
-            switch (caller)
-            {
-                case 0:
-                    Console.Write("\nInput the reference number: ");
-                    break;
-                case 1:
-                    Console.Write("\nInput the reference number basepart: ");
-                    break;
-            }
+        {            
             string input;
             bool correctForm = false;
             do
             {
+                switch (caller)
+                {
+                    case 0:
+                        Console.Write("\nInput the reference number: ");
+                        break;
+                    case 1:
+                        Console.Write("\nInput the reference number basepart: ");
+                        break;
+                }
                 input = Console.ReadLine();
                 RemoveExtra(ref input);
                 if (IsNumbersOnly(input) == true)
                 {
-                    if (validate == true && Validator(input, max) == true)
-                        correctForm = true;
-                    else if (validate == false)
+                    if (Validator(input, max, validate) == true)
                         correctForm = true;
                 }
                 else if (input == "X" || input == "x")
@@ -134,13 +134,18 @@ namespace ReferenceNumber
                 return false;
         }
 
-        static bool Validator(string checkInput, int max)
+        static bool Validator(string checkInput, int max, bool validate)
         {
             if (checkInput.Length > 3 && checkInput.Length < max)
             {
-                int i = 0;
-                if (CheckNumber(checkInput, 0, ref i) == true)
+                if (validate == false)
                     return true;
+                else
+                {
+                    int i = 0; // ref part is only for creation
+                    if (CheckNumber(checkInput, 0, ref i) == true)
+                        return true;
+                }
             }
             else
                 Error(3);
@@ -205,12 +210,12 @@ namespace ReferenceNumber
             return (int)((Math.Round(sum / 10.0)) * 10);
         }
 
-        static string RefCreate()
+        static string RefCreate(int caller, int max)
         {
-            string userInput = Inputter(20, 1, false);
+            string userInput = Inputter(max, 1, false);
             int checkNumber = 0;
             CheckNumber(userInput, 1, ref checkNumber);
-            userInput = userInput + checkNumber;
+            userInput += checkNumber;
             return userInput;
         }
 
@@ -230,13 +235,13 @@ namespace ReferenceNumber
             switch (errorCode)
             {
                 case 1:
-                    Console.WriteLine("Error occurred!");
+                    Console.WriteLine($"Error occurred!");
                     break;
                 case 2:
-                    Console.WriteLine("Input must contain only numbers! Typing X and pressing enter will stop.");
+                    Console.WriteLine($"Input must contain only numbers! Typing X and pressing enter will stop.");
                     break;
                 case 3:
-                    Console.WriteLine("Input should have 4 - 20 numbers!");
+                    Console.WriteLine($"Invalid amount of numbers!");
                     break;
             }
             Console.ResetColor();

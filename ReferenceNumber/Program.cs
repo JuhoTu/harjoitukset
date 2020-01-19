@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ReferenceNumber
 {
@@ -50,6 +51,9 @@ namespace ReferenceNumber
             return char.ToUpper(Console.ReadKey().KeyChar);
         }
 
+        /// <summary>
+        /// This is the main method for reference number check
+        /// </summary>
         static void RefChecker()
         {
             string input = Inputter("", 21, 0, true);
@@ -63,6 +67,9 @@ namespace ReferenceNumber
             }
         }
 
+        /// <summary>
+        /// This is the main method for reference number creation
+        /// </summary>
         static void RefCreator()
         {
             string basePart = BasePart(1, 20);
@@ -70,10 +77,13 @@ namespace ReferenceNumber
             Console.WriteLine($"Created reference number: {created}");
         }
 
+        /// <summary>
+        /// This is the main method for multiple reference number creation
+        /// </summary>
         static void RefMultiCreator()
         {
             int count = HowMany();
-            string countNum = count.ToString();
+            string countNum = count.ToString(), filePath = @"referencenumber.txt";
             int max = 19 - countNum.Length;
             string basePart = BasePart(2, max);
             if (count > 0)
@@ -81,12 +91,12 @@ namespace ReferenceNumber
                 for (int i = 0; i < count; i++)
                 {
                     string created = RefCreate(BaseMulti(basePart, i + 1));
-                    Vault(created);
-                    Console.WriteLine($"Created reference number: {created}");
+                    Vault(created, filePath);
                 }
             }
             else
                 Console.WriteLine("Creation was cancelled.");
+            Console.WriteLine($"Created reference numbers have been saved to a file at {filePath}.");
         }
 
         static string Inputter(string input, int max, int caller, bool validate)
@@ -307,9 +317,10 @@ namespace ReferenceNumber
             return basePart;
         }
 
-        static void Vault(string created)
+        static void Vault(string created, string filePath)
         {
-            
+            using StreamWriter vaulter = new StreamWriter(filePath, true);
+            vaulter.WriteLine(created);
         }
 
         static void Error(int errorCode, string msg)

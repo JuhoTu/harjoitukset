@@ -87,6 +87,8 @@ namespace ReferenceNumber
                 basePart = BasePart(2, max); // Stores user's given info of basepart
                 if (basePart.ToUpper() != "X")
                 {
+                    Console.Write("Name for reference numbers: "); // Asks name for ref num, could be f.ex. customer name
+                    Vault(Console.ReadLine(), filePath); // Stores the given name to file
                     for (int i = 0; i < count; i++) // Creates a new number each loop from basepart and ref num index
                     {
                         string created = RefCreate(BaseMulti(basePart, i + 1)); // Creates a new num with multi creation options
@@ -111,17 +113,18 @@ namespace ReferenceNumber
         /// <returns></returns>
         static string Inputter(ref string input, int max, int caller, bool validate)
         {
+            Console.WriteLine();
             bool correctForm = false;
             do
             {
                 if (caller == 0) // Asks reference number on check
                 {
-                    Console.Write("\nInput the reference number: ");
+                    Console.Write("Input the reference number: ");
                     input = Console.ReadLine();
                 }
                 if (caller == 1 || caller == 2) // Asks basepart on creation
                 {
-                    Console.Write("\nInput the basepart: ");
+                    Console.Write("Input the basepart: ");
                     input = Console.ReadLine();
                 }
                 if (input.ToUpper() == "X")
@@ -355,30 +358,30 @@ namespace ReferenceNumber
         /// <summary>
         /// Stores created numbers to a text file
         /// </summary>
-        /// <param name="created"></param>
+        /// <param name="input"></param>
         /// <param name="filePath"></param>
-        static void Vault(string created, string filePath)
+        static void Vault(string input, string filePath)
         {
             using StreamWriter vaulter = new StreamWriter(filePath, true); // Creates vaulter for file writing with inbound filepath
-            vaulter.WriteLine(created); // Adds a new line to file
+            vaulter.WriteLine(input); // Adds a new line to file
         }
 
         /// <summary>
-        /// Edits the reference number to be in groups of five chars
+        /// Edits the reference number to be in groups of five chars, caller index 4
         /// </summary>
         /// <param name="input"></param>
         static string Print(string input)
         {
-            int count = input.Length;
-            for (int i = 20; i > count; i--)
+            int count = input.Length; // Store input length
+            for (int i = 20; i > count; i--) // Add dots so that input length is 20
                 input = input.Insert(0, ".");
-            count = input.Length;
+            count = input.Length; // Store input length
             for (int i = count -1; i > 0; i--)
             {
-                if (i % 5 == 0)
+                if (i % 5 == 0) // If number in question is fifth char, add space
                     input = input.Insert(i, " ");
             }
-            RemoveExtra(ref input, 4);
+            RemoveExtra(ref input, 4); // Removes unneeded chars
             return input;
         }
 

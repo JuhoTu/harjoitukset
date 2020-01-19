@@ -68,7 +68,7 @@ namespace ReferenceNumber
             if (basePart.ToUpper() != "X")
             {
                 string created = RefCreate(basePart); // Creates a full ref number
-                Console.WriteLine($"Created reference number: {created}");
+                Console.WriteLine($"Created reference number: {Print(created)}");
             }
             else
                 Console.WriteLine("Reference number creation was cancelled.");
@@ -355,6 +355,24 @@ namespace ReferenceNumber
         {
             using StreamWriter vaulter = new StreamWriter(filePath, true); // Creates vaulter for file writing with inbound filepath
             vaulter.WriteLine(created); // Adds a new line to file
+        }
+
+        /// <summary>
+        /// Edits the reference number to be in groups of five chars
+        /// </summary>
+        /// <param name="input"></param>
+        static string Print(string input)
+        {
+            int count = input.Length;
+            for (int i = 20; i > count; i--)
+                input = input.Insert(0, ".");
+            count = input.Length;
+            for (int i = count -1; i > 0; i--)
+            {
+                if (i % 5 == 0)
+                    input = input.Insert(i, " ");
+            }
+            return input;
         }
 
         /// <summary>

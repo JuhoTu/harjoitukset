@@ -74,7 +74,7 @@ namespace ReferenceNumber
         {
             int count = HowMany();
             string countNum = count.ToString();
-            int max = 20 - countNum.Length;
+            int max = 19 - countNum.Length;
             string basePart = BasePart(2, max);
             if (count > 0)
             {
@@ -105,20 +105,38 @@ namespace ReferenceNumber
                     case 2:
                         break;
                 }
-                RemoveExtra(ref input);
-                if (IsNumbersOnly(input) == true)
+                if (NoZeroStart(input) == true)
                 {
-                    if (Validator(input, max, validate) == true)
-                        correctForm = true;
+                    RemoveExtra(ref input);
+                    if (IsNumbersOnly(input) == true)
+                    {
+                        if (Validator(input, max, validate) == true)
+                            correctForm = true;
+                    }
+                    else if (input == "X" || input == "x")
+                        break;
+                    else
+                        Error(2, "X");
                 }
                 else if (input == "X" || input == "x")
                     break;
                 else
-                    Error(2, "X");
+                    Error(6, null);
             } while (correctForm == false);
-            
-            Console.WriteLine(input);
             return input;
+        }
+
+        static bool NoZeroStart(string input)
+        {
+            bool noZero = false;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].ToString() != "0")
+                    noZero = true;
+                else
+                    break;
+            }
+            return noZero;
         }
 
         static void RemoveExtra(ref string userInput)
@@ -220,19 +238,28 @@ namespace ReferenceNumber
                 Console.Write("\nInput basepart: ");
                 userInput = Console.ReadLine();
                 RemoveExtra(ref userInput);
-                if (userInput.Length > 3 && userInput.Length < max)
+                if (NoZeroStart(userInput) == true)
                 {
-                    if (IsNumbersOnly(userInput) == true)
+                    if (userInput.Length > 3 && userInput.Length < max)
                     {
-                        correctForm = true;
+                        if (IsNumbersOnly(userInput) == true)
+                        {
+                            correctForm = true;
+                        }
+                        else if (userInput == "X" || userInput == "x")
+                            break;
+                        else
+                            Error(2, "X");
                     }
                     else if (userInput == "X" || userInput == "x")
                         break;
                     else
-                        Error(2, null);
+                        Error(3, null);
                 }
+                else if (userInput == "X" || userInput == "x")
+                    break;
                 else
-                    Error(3, null);
+                    Error(6, null);
             } while (correctForm == false);
 
         string basePart = Inputter(userInput, max, caller, false);
@@ -304,6 +331,9 @@ namespace ReferenceNumber
                     break;
                 case 5:
                     Console.WriteLine($"Check number is invalid! Typing {msg} and pressing enter will stop.");
+                    break;
+                case 6:
+                    Console.WriteLine($"Reference number can't start with zeros!");
                     break;
                 default:
                     Console.WriteLine("\nError occured!");

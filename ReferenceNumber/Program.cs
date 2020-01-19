@@ -90,7 +90,7 @@ namespace ReferenceNumber
                     for (int i = 0; i < count; i++) // Creates a new number each loop from basepart and ref num index
                     {
                         string created = RefCreate(BaseMulti(basePart, i + 1)); // Creates a new num with multi creation options
-                        Vault(created, filePath); // Stores created to a file
+                        Vault(Print(created), filePath); // Stores created to a file
                     }
                     Console.WriteLine($"Created reference numbers have been saved to a file at {filePath}.");
                 }
@@ -102,7 +102,7 @@ namespace ReferenceNumber
         }
 
         /// <summary>
-        /// When input is needed, this function will check its suitability
+        /// When input is needed, this function will check its suitability, caller index 3
         /// </summary>
         /// <param name="input"></param>
         /// <param name="max"></param>
@@ -128,7 +128,7 @@ namespace ReferenceNumber
                     break; // Stops the operation
                 if (NoZeroStart(input) == true) // Checks that input will not start with zero
                 {
-                    RemoveExtra(ref input); // Removes spaces
+                    RemoveExtra(ref input, 3); // Removes spaces
                     if (IsNumbersOnly(input) == true) // Checks that only contains numbers
                     {
                         if (Validator(input, max, validate) == true)
@@ -165,9 +165,15 @@ namespace ReferenceNumber
         /// Had there been accidental spaces on number this will remove them from input
         /// </summary>
         /// <param name="userInput"></param>
-        static void RemoveExtra(ref string userInput)
+        static void RemoveExtra(ref string input, int caller)
         {
-            userInput = userInput.Replace(" ", ""); // Removes spaces
+            if (caller == 3)
+                input = input.Replace(" ", ""); // Removes spaces
+            if (caller == 4)
+            {
+                input = input.Replace(".", ""); // Remove dots
+                input = input.TrimStart(); // Remove spaces from start
+            }
         }
 
         /// <summary>
@@ -372,6 +378,7 @@ namespace ReferenceNumber
                 if (i % 5 == 0)
                     input = input.Insert(i, " ");
             }
+            RemoveExtra(ref input, 4);
             return input;
         }
 

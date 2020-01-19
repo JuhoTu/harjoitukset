@@ -52,8 +52,8 @@ namespace ReferenceNumber
         static void RefChecker()
         {
             string input = "";
-            input = Inputter(ref input, 21, 0, true); // Asks input
-            if (Validator(input, 21, true) == true) // Validates input
+            input = Inputter(ref input, 4, 20, 0, true); // Asks input
+            if (Validator(input, 4, 20, true) == true) // Validates input
                 Console.WriteLine("Reference number is valid.");
             else
                 Console.WriteLine("Reference number is invalid.");
@@ -64,7 +64,7 @@ namespace ReferenceNumber
         /// </summary>
         static void RefCreator()
         {
-            string basePart = BasePart(1, 20); // Stores user's given info of basepart
+            string basePart = BasePart(1, 3, 19); // Stores user's given info of basepart
             if (basePart.ToUpper() != "X")
             {
                 string created = RefCreate(basePart); // Creates a full ref number
@@ -84,7 +84,7 @@ namespace ReferenceNumber
             int max = 19 - countNum.Length; // Makes ref number max length to be able to be 20 at max
             if (count > 0) // Runs only when more than zero will be created
             {
-                basePart = BasePart(2, max); // Stores user's given info of basepart
+                basePart = BasePart(2, 3, max); // Stores user's given info of basepart
                 if (basePart.ToUpper() != "X")
                 {
                     Console.Write("Name for reference numbers: "); // Asks name for ref num, could be f.ex. customer name
@@ -111,7 +111,7 @@ namespace ReferenceNumber
         /// <param name="caller"></param>
         /// <param name="validate"></param>
         /// <returns></returns>
-        static string Inputter(ref string input, int max, int caller, bool validate)
+        static string Inputter(ref string input, int min, int max, int caller, bool validate)
         {
             Console.WriteLine();
             bool correctForm = false;
@@ -134,7 +134,7 @@ namespace ReferenceNumber
                     RemoveExtra(ref input, 3); // Removes spaces
                     if (IsNumbersOnly(input) == true) // Checks that only contains numbers
                     {
-                        if (Validator(input, max, validate) == true)
+                        if (Validator(input, min, max, validate) == true)
                             correctForm = true; // If validation is valid continue forward
                     }
                     else
@@ -206,9 +206,9 @@ namespace ReferenceNumber
         /// <param name="max"></param>
         /// <param name="validate"></param>
         /// <returns></returns>
-        static bool Validator(string checkInput, int max, bool validate)
+        static bool Validator(string checkInput, int min, int max, bool validate)
         {
-            if (checkInput.Length > 3 && checkInput.Length < max)
+            if (checkInput.Length >= min && checkInput.Length <= max)
             { // Checks length
                 if (validate == false) // In case of creation, no validation is needed
                     return true;
@@ -293,10 +293,10 @@ namespace ReferenceNumber
         /// <param name="caller"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        static string BasePart(int caller, int max)
+        static string BasePart(int caller, int min, int max)
         {
             string userInput = "";
-            string basePart = Inputter(ref userInput, max, caller, false); // Asks basepart
+            string basePart = Inputter(ref userInput, min, max, caller, false); // Asks basepart
             return basePart;
         }
 

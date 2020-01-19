@@ -65,8 +65,13 @@ namespace ReferenceNumber
         static void RefCreator()
         {
             string basePart = BasePart(1, 20); // Stores user's given info of basepart
-            string created = RefCreate(basePart); // Creates a full ref number
-            Console.WriteLine($"Created reference number: {created}");
+            if (basePart.ToUpper() != "X")
+            {
+                string created = RefCreate(basePart); // Creates a full ref number
+                Console.WriteLine($"Created reference number: {created}");
+            }
+            else
+                Console.WriteLine("Reference number creation was cancelled.");
         }
 
         /// <summary>
@@ -75,20 +80,25 @@ namespace ReferenceNumber
         static void RefMultiCreator()
         {
             int count = HowMany(); // Asks user of how many new
-            string countNum = count.ToString(), filePath = @"referencenumber.txt";
+            string countNum = count.ToString(), basePart, filePath = @"referencenumber.txt";
             int max = 19 - countNum.Length; // Makes ref number max length to be able to be 20 at max
-            string basePart = BasePart(2, max); // Stores user's given info of basepart
             if (count > 0) // Runs only when more than zero will be created
             {
-                for (int i = 0; i < count; i++) // Creates a new number each loop from basepart and ref num index
+                basePart = BasePart(2, max); // Stores user's given info of basepart
+                if (basePart.ToUpper() != "X")
                 {
-                    string created = RefCreate(BaseMulti(basePart, i + 1)); // Creates a new num with multi creation options
-                    Vault(created, filePath); // Stores created to a file
+                    for (int i = 0; i < count; i++) // Creates a new number each loop from basepart and ref num index
+                    {
+                        string created = RefCreate(BaseMulti(basePart, i + 1)); // Creates a new num with multi creation options
+                        Vault(created, filePath); // Stores created to a file
+                    }
+                    Console.WriteLine($"Created reference numbers have been saved to a file at {filePath}.");
                 }
+                else
+                    Console.WriteLine("Creation was cancelled.");
             }
             else
                 Console.WriteLine("Creation was cancelled.");
-            Console.WriteLine($"Created reference numbers have been saved to a file at {filePath}.");
         }
 
         /// <summary>
@@ -289,7 +299,8 @@ namespace ReferenceNumber
         static string RefCreate(string basePart)
         {
             int checkNumber = 0;
-            CheckNumber(basePart, 1, ref checkNumber); // Creates hash
+            if (basePart.ToUpper() != "X")
+                CheckNumber(basePart, 1, ref checkNumber); // Creates hash
             basePart += checkNumber; // Adds hash to basepart
             return basePart; // Returns created ref number
         }
